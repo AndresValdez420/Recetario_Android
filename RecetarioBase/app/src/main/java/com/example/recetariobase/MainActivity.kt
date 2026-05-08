@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.recetariobase.componentes.PlatilloCard
 import com.example.recetariobase.ui.theme.RecetarioBaseTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainContent(modifier: Modifier = Modifier) {
-
+    PlatilloCard()
 }
 
 
