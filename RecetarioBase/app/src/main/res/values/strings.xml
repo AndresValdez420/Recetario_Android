@@ -4,4 +4,9 @@
         <item quantity="one">%1$d porción</item>
         <item quantity="other">%1$d porciones</item>
     </plurals>
+
+    <string name="home_screen_welcome">Buen día</string>
+    <string name="home_screen_pregunta">¿Qué cocinamos hoy?</string>
+    <string name="buscar">Buscar</string>
+    <string name="favorito">Favorito</string>
 </resources>
