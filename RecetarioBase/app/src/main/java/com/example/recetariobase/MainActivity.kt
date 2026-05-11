@@ -27,8 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.navegacion.componentes.BarraInferior
 import com.example.navegacion.componentes.Recetas
 import com.example.navegacion.componentes.HomeScreen
-import com.example.navegacion.componentes.Radio
-import com.example.navegacion.componentes.Songs
+import com.example.navegacion.componentes.Registros
+import com.example.navegacion.componentes.Favoritos
 import com.example.navegacion.modelos.Pantallas
 import com.example.recetariobase.componentes.ContenidoHojaInferior
 import com.example.recetariobase.componentes.ListaPlatillos
@@ -69,14 +69,14 @@ class MainActivity : ComponentActivity() {
                         composable<Pantallas.Inicio>{
                             HomeScreen()
                         }
-                        composable<Pantallas.Descubrir>{
+                        composable<Pantallas.Recetas>{
                             Recetas()
                         }
-                        composable<Pantallas.Reproducir>{
-                            Radio()
+                        composable<Pantallas.Registros>{
+                            Registros()
                         }
-                        composable<Pantallas.Canciones>{
-                            Songs()
+                        composable<Pantallas.Favoritos>{
+                            Favoritos()
                         }
                     }
                 }

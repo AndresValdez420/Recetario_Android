@@ -21,28 +21,28 @@ fun BarraInferior(
 ){
     val destinos = listOf(
         DestinoSuperior(
-            stringResource(R.drawable.food_takeout_box),
+            stringResource(R.string.Home),
             R.drawable.food_takeout_box,
             R.drawable.food_takeout_box,
             Pantallas.Inicio
         ),
         DestinoSuperior(
-            stringResource(R.drawable.food_takeout_box),
+            stringResource(R.string.Recipies),
             R.drawable.food_takeout_box,
             R.drawable.food_takeout_box,
-            Pantallas.Descubrir
+            Pantallas.Recetas
         ),
         DestinoSuperior(
-            stringResource(R.drawable.food_takeout_box),
+            stringResource(R.string.Records),
             R.drawable.food_takeout_box,
             R.drawable.food_takeout_box,
-            Pantallas.Reproducir
+            Pantallas.Registros
         ),
         DestinoSuperior(
-            stringResource(R.drawable.food_takeout_box),
+            stringResource(R.string.Favorites),
             R.drawable.food_takeout_box,
             R.drawable.food_takeout_box,
-            Pantallas.Canciones
+            Pantallas.Favoritos
         )
     )
 
