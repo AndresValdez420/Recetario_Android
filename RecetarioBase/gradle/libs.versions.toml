@@ -13,6 +13,7 @@ serializationVersion = "2.0.21"
 kotlinxSerializationJson = "1.7.3"
 
 
+
 [libraries]
 kotlinx-serialization-json = {module="org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref="kotlinxSerializationJson"}
 androidx-navigation-compose = {module="androidx.navigation:navigation-compose", version.ref="navVersion"}

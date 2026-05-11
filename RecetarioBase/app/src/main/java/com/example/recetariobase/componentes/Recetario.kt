@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,18 +25,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recetariobase.R
+import com.example.recetariobase.modelos.Receta
 
 @Composable
 fun PlatilloCard(
-    nombre: String = "Platillo",
-    tiempo: String = "5 min",
-    porciones: String = "1 porción",
-    calorias: String = "Calorías",
-    dificultad: String = "Dificultad"
+    receta: Receta
 ) {
     Card(
         modifier = Modifier
@@ -63,7 +63,14 @@ fun PlatilloCard(
                         tint = Color.Gray
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = porciones, fontSize = 14.sp)
+                    Text(
+                        text = pluralStringResource(
+                            R.plurals.servings,
+                            receta.servings.toInt(),
+                            receta.servings
+                        ),
+                        fontSize = 14.sp
+                    )
 
                     Spacer(modifier = Modifier.width(12.dp))
 
@@ -74,11 +81,11 @@ fun PlatilloCard(
                         tint = Color.Gray
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = calorias, fontSize = 14.sp)
+                    Text(text = "${receta.caloriesPerServing} kcal", fontSize = 14.sp)
                 }
 
                 Text(
-                    text = dificultad,
+                    text = receta.difficulty,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -87,15 +94,16 @@ fun PlatilloCard(
                 modifier = Modifier.align(Alignment.BottomStart)
             ) {
                 Text(
-                    text = tiempo,
+                    text = "${receta.prepTimeMinutes + receta.cookTimeMinutes} min",
                     fontSize = 14.sp,
                     color = Color.Black
                 )
                 Text(
-                    text = nombre,
+                    text = receta.name,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth(0.8f)
                 )
             }
             IconButton(
@@ -109,6 +117,14 @@ fun PlatilloCard(
                     tint = Color(0xFFCCCCCC)
                 )
             }
+        }
+    }
+}
+@Composable
+fun ListaPlatillos(recetas: List<Receta>, modifier: Modifier = Modifier){
+    LazyColumn(modifier = modifier) {
+        items(recetas) { receta ->
+            PlatilloCard(receta = receta)
         }
     }
 }

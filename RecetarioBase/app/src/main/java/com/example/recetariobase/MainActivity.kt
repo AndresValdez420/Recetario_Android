@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.recetariobase.componentes.PlatilloCard
+import com.example.recetariobase.componentes.ListaPlatillos
+import com.example.recetariobase.datos.Datos
 import com.example.recetariobase.ui.theme.RecetarioBaseTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +34,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainContent(modifier: Modifier = Modifier) {
-    PlatilloCard()
+    val context = LocalContext.current
+    val recetasMap = remember { Datos.getRecetas(context) }
+    val todasLasRecetas = remember(recetasMap) { recetasMap.values.flatten() }
+
+    ListaPlatillos(recetas = todasLasRecetas, modifier = modifier)
 }
 
 
