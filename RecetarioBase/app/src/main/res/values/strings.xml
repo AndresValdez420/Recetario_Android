@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">RecetarioBase</string>
+    <string name="Home">Inicio</string>
+    <string name="Recipies">Recetas</string>
+    <string name="Records">Registros</string>
+    <string name="Favorites">Favoritos</string>
     <plurals name="servings">
         <item quantity="one">%1$d porción</item>
         <item quantity="other">%1$d porciones</item>
@@ -9,4 +13,5 @@
     <string name="home_screen_pregunta">¿Qué cocinamos hoy?</string>
     <string name="buscar">Buscar</string>
     <string name="favorito">Favorito</string>
+    <string name="populares">Populares</string>
 </resources>

@@ -144,7 +144,7 @@ fun HomeScreen(
 
                     Icon(
                         painter = painterResource(R.drawable.heart_outline),
-                        contentDescription = "Favorito",
+                        contentDescription = "",
                         tint = Color.White
                     )
                 }
@@ -160,14 +160,9 @@ fun HomeScreen(
         ) {
 
             Text(
-                text = "Populares",
+                text = stringResource(R.string.populares),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "Ver más",
-                color = Color.Gray
             )
         }
 
