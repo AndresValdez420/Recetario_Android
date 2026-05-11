@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            RecetarioBaseTheme {
+            RecetarioBaseTheme(dynamicColor = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainContent(
                         modifier = Modifier.padding(innerPadding)

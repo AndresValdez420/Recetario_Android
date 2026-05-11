@@ -29,14 +29,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.recetariobase.MainContent
 import com.example.recetariobase.R
 import com.example.recetariobase.modelos.Receta
+import com.example.recetariobase.ui.theme.RecetarioBaseTheme
 
 @Composable
 fun HomeScreen(
-    receta: Receta,
+    //receta: Receta,
     modifier: Modifier = Modifier
 ) {
 
@@ -100,14 +103,6 @@ fun HomeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0xFFFFC107),
-                                Color(0xFFFF9800)
-                            )
-                        )
-                    )
             ) {
 
                 Column(
@@ -198,14 +193,6 @@ fun HomeScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0xFFFFD54F),
-                                        Color(0xFFFFA726)
-                                    )
-                                )
-                            )
                     ) {
 
                         Column(
@@ -242,5 +229,12 @@ fun HomeScreen(
                 }
             }
         }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    RecetarioBaseTheme {
+        HomeScreen()
     }
 }
