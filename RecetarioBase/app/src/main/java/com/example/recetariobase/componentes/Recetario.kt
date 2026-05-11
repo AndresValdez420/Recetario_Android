@@ -17,9 +17,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,11 +35,14 @@ import androidx.compose.ui.unit.sp
 import com.example.recetariobase.R
 import com.example.recetariobase.modelos.Receta
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlatilloCard(
-    receta: Receta
+    receta: Receta,
+    onClick: () -> Unit
 ) {
     Card(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
@@ -57,7 +63,7 @@ fun PlatilloCard(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        painter = painterResource(R.drawable.heart_outline),
+                        painter = painterResource(R.drawable.food_takeout_box),
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
                         tint = Color.Gray
@@ -75,7 +81,7 @@ fun PlatilloCard(
                     Spacer(modifier = Modifier.width(12.dp))
 
                     Icon(
-                        painter = painterResource(R.drawable.heart_outline),
+                        painter = painterResource(R.drawable.fire),
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
                         tint = Color.Gray
@@ -120,11 +126,35 @@ fun PlatilloCard(
         }
     }
 }
+
 @Composable
-fun ListaPlatillos(recetas: List<Receta>, modifier: Modifier = Modifier){
+fun ListaPlatillos(
+    recetas: List<Receta>,
+    onRecetaClick: (Receta) -> Unit,
+    modifier: Modifier = Modifier
+){
     LazyColumn(modifier = modifier) {
         items(recetas) { receta ->
-            PlatilloCard(receta = receta)
+            PlatilloCard(
+                receta = receta,
+                onClick = { onRecetaClick(receta) }
+            )
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = receta.name,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
