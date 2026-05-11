@@ -40,13 +40,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-<<<<<<< HEAD
-            RecetarioBaseTheme(dynamicColor = false) {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainContent(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-=======
             val controlador = rememberNavController()
             val backStackEntry by controlador.currentBackStackEntryAsState()
             val destinoActual = backStackEntry?.destination
@@ -86,7 +79,6 @@ class MainActivity : ComponentActivity() {
                             Favoritos()
                         }
                     }
->>>>>>> 7af83a0ac1c8b15b4584cb0c8dfe9c713e0c257c
                 }
             }
         }
