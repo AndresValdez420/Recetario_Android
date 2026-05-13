@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.recetariobase.MainContent
 import com.example.recetariobase.R
 import com.example.recetariobase.modelos.Receta
 import com.example.recetariobase.ui.theme.RecetarioBaseTheme
