@@ -13,8 +13,7 @@ import com.example.recetariobase.RecetasListaConCategorias
 fun Recetas(){
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Yellow),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
         RecetasListaConCategorias()

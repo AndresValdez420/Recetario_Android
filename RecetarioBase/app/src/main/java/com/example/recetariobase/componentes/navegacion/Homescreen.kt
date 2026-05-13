@@ -77,15 +77,12 @@ fun HomeScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    // IMAGEN DE FONDO CON COIL
                     AsyncImage(
                         model = receta.image,
                         contentDescription = receta.name,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
-
-                    // Degradado para legibilidad
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -163,8 +160,6 @@ fun HomeScreen(
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop
                         )
-
-                        // Degradado
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
