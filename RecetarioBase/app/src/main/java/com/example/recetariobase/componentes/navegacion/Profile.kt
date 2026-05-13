@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun Registros(){
+fun Perfil(){
     Box(
         modifier = Modifier
             .fillMaxSize()

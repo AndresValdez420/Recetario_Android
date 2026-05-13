@@ -27,7 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.navegacion.componentes.BarraInferior
 import com.example.navegacion.componentes.Recetas
 import com.example.navegacion.componentes.HomeScreen
-import com.example.navegacion.componentes.Registros
+import com.example.navegacion.componentes.Perfil
 import com.example.navegacion.componentes.Favoritos
 import com.example.navegacion.modelos.Pantallas
 import com.example.recetariobase.componentes.ContenidoHojaInferior
@@ -66,18 +66,22 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .fillMaxSize()
                     ){
-                        composable<Pantallas.Inicio>{
-                            HomeScreen()
+                        composable<Pantallas.Inicio> {
+                            val context = LocalContext.current
+                            val recetasMap = remember { Datos.getRecetas(context) }
+                            val todasLasRecetas = remember(recetasMap) { recetasMap.values.flatten() }
+                            HomeScreen(recetas = todasLasRecetas)
                         }
                         composable<Pantallas.Recetas>{
                             Recetas()
                         }
-                        composable<Pantallas.Registros>{
-                            Registros()
-                        }
                         composable<Pantallas.Favoritos>{
                             Favoritos()
                         }
+                        composable<Pantallas.Perfil>{
+                            Perfil()
+                        }
+
                     }
                 }
             }
