@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -79,7 +80,7 @@ fun PlatilloCard(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.food_takeout_box),
-                        contentDescription = null,
+                        contentDescription = "Porcion",
                         modifier = Modifier.size(14.dp),
                         tint = Color.White
                     )
@@ -103,7 +104,7 @@ fun PlatilloCard(
 
                     Icon(
                         painter = painterResource(R.drawable.fire),
-                        contentDescription = null,
+                        contentDescription = "Calorias",
                         modifier = Modifier.size(14.dp),
                         tint = Color.White
                     )
@@ -173,49 +174,56 @@ fun ListaPlatillos(
     recetas: List<Receta>,
     onRecetaClick: (Receta) -> Unit,
     modifier: Modifier = Modifier
-){
-    // Texto superior
-    Text(
-        text = stringResource(R.string.home_screen_welcome),
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Light,
-        color = Color.Gray
-    )
-
-    Text(
-        text = stringResource(R.string.home_screen_pregunta),
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Bold
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    // Barra de búsqueda
-    OutlinedTextField(
-        value = "",
-        onValueChange = {},
-        placeholder = { Text(stringResource(R.string.buscar)) },
-        modifier = Modifier.fillMaxWidth().height(56.dp),
-        shape = RoundedCornerShape(50.dp),
-        trailingIcon = {
-            Icon(
-                painter = painterResource(R.drawable.baseline_search_24),
-                contentDescription = stringResource(R.string.buscar)
-            )
-        },
-        singleLine = true
-    )
-
-    Spacer(modifier = Modifier.height(24.dp))
-    LazyColumn(
-        modifier = modifier.padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
     ) {
-        items(recetas) { receta ->
-            PlatilloCard(
-                receta = receta,
-                onClick = { onRecetaClick(receta) }
-            )
+        Spacer(modifier = Modifier.height(80.dp))
+        Text(
+            text = stringResource(R.string.Recipies),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text(stringResource(R.string.buscar)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50.dp),
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.baseline_search_24),
+                    contentDescription = stringResource(R.string.buscar)
+                )
+            },
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+
+            items(recetas) { receta ->
+
+                PlatilloCard(
+                    receta = receta,
+                    onClick = { onRecetaClick(receta) }
+                )
+            }
         }
     }
 }
@@ -267,7 +275,7 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
             }
             Icon(
                 painter = painterResource(R.drawable.heart_outline),
-                contentDescription = null,
+                contentDescription = "Favoritos",
                 tint = Color.Gray,
                 modifier = Modifier.size(32.dp)
             )
@@ -281,7 +289,7 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
             //Lista
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Ingredientes",
+                    text = stringResource(R.string.ingredientes),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -308,7 +316,7 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
                 ) {
                     AsyncImage(
                         model = receta.image,
-                        contentDescription = null,
+                        contentDescription = "Imagen platillo",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -317,7 +325,7 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(R.drawable.food_takeout_box),
-                        contentDescription = null,
+                        contentDescription = "Porciones",
                         modifier = Modifier.size(14.dp),
                         tint = Color.Gray
                     )
@@ -325,7 +333,7 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         painter = painterResource(R.drawable.fire),
-                        contentDescription = null,
+                        contentDescription = "Calorias",
                         modifier = Modifier.size(14.dp),
                         tint = Color.Gray
                     )
@@ -338,7 +346,7 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
 
         //Preparación
         Text(
-            text = "Preparacion",
+            text = stringResource(R.string.preparacion),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
@@ -351,13 +359,19 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(
-            text = receta.instructions.joinToString("\n\n"),
-            fontSize = 15.sp,
-            color = Color.Gray,
-            lineHeight = 22.sp
-        )
+        Column {
 
+            receta.instructions.forEachIndexed { index, paso ->
+
+                Text(
+                    text = "${index + 1}. $paso",
+                    fontSize = 15.sp,
+                    color = Color.Gray,
+                    lineHeight = 22.sp,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(40.dp))
     }
 }

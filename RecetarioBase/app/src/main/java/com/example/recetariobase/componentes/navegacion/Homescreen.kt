@@ -34,7 +34,6 @@ fun HomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
             .padding(24.dp)
     ) {
         // Texto superior

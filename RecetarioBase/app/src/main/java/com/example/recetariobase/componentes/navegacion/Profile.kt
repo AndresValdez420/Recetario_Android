@@ -12,8 +12,7 @@ import androidx.compose.ui.graphics.Color
 fun Perfil(){
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Blue),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
 

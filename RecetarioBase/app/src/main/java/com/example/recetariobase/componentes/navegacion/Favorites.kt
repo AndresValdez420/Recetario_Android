@@ -12,8 +12,7 @@ import androidx.compose.ui.graphics.Color
 fun Favoritos(){
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Green),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
 

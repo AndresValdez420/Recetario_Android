@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -40,13 +41,15 @@ fun BarraInferior(
         ),
         DestinoSuperior(
             stringResource(R.string.Profile),
-            R.drawable.food_takeout_box,
-            R.drawable.food_takeout_box,
+            R.drawable.account_circle_outline,
+            R.drawable.account_circle,
             Pantallas.Favoritos
         )
     )
 
-    NavigationBar{
+    NavigationBar(
+        tonalElevation = 0.dp
+    ) {
         destinos.forEach {
             val seleccionado = destinoActual?.hierarchy?.any{h ->
                 h.hasRoute(it.ruta::class)
