@@ -1,4 +1,4 @@
-package com.example.recetariobase.componentes.navegacion
+package com.example.navegacion.componentes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -109,8 +109,8 @@ fun HomeScreen(
                             color = Color.White,
                             fontSize = 14.sp,
                             modifier = Modifier
-                                .background(Color.Black.copy(alpha = 0.4f), RoundedCornerShape(4.dp))
-                                .padding(horizontal = 4.dp, vertical = 2.dp)
+                                .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                                .padding(horizontal = 8.dp, vertical = 2.dp)
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
@@ -195,8 +195,8 @@ fun HomeScreen(
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 modifier = Modifier
-                                    .background(Color.Black.copy(alpha = 0.4f), RoundedCornerShape(4.dp))
-                                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                                    .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                                    .padding(horizontal = 6.dp, vertical = 1.dp)
                             )
                             Text(
                                 text = receta.name,

@@ -1,4 +1,4 @@
-package com.example.navegacion.componentes
+package com.example.recetariobase.componentes.navegacion
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,26 +1,13 @@
 package com.example.recetariobase.componentes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,11 +30,14 @@ fun PlatilloCard(
     receta: Receta,
     onClick: () -> Unit
 ) {
+    val tagBackgroundColor = Color.Black.copy(alpha = 0.4f)
+    val tagShape = RoundedCornerShape(8.dp)
+
     Card(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(220.dp)
             .padding(8.dp),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -60,7 +51,6 @@ fun PlatilloCard(
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -74,7 +64,6 @@ fun PlatilloCard(
                         )
                     )
             )
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,11 +71,16 @@ fun PlatilloCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier
+                        .background(tagBackgroundColor, tagShape)
+                        .padding(horizontal = 10.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Icon(
                         painter = painterResource(R.drawable.food_takeout_box),
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(14.dp),
                         tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -96,37 +90,41 @@ fun PlatilloCard(
                             receta.servings.toInt(),
                             receta.servings
                         ),
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         color = Color.White
                     )
 
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Box(modifier = Modifier
+                        .width(1.dp)
+                        .height(10.dp)
+                        .background(Color.White.copy(0.3f)))
+                    Spacer(modifier = Modifier.width(8.dp))
 
                     Icon(
                         painter = painterResource(R.drawable.fire),
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(14.dp),
                         tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "${receta.caloriesPerServing} kcal",
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         color = Color.White
                     )
                 }
 
                 Text(
                     text = receta.difficulty,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
-                        .background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .background(tagBackgroundColor, tagShape)
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
                 )
             }
-
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -134,16 +132,22 @@ fun PlatilloCard(
             ) {
                 Text(
                     text = "${receta.prepTimeMinutes + receta.cookTimeMinutes} min",
-                    fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.8f)
+                    fontSize = 12.sp,
+                    color = Color.White,
+                    modifier = Modifier
+                        .background(tagBackgroundColor, tagShape)
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
                 )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
                 Text(
                     text = receta.name,
-                    fontSize = 28.sp,
+                    fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    lineHeight = 32.sp
+                    lineHeight = 30.sp
                 )
             }
 
@@ -156,7 +160,7 @@ fun PlatilloCard(
                 Icon(
                     painter = painterResource(R.drawable.heart_outline),
                     contentDescription = "Favorito",
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(28.dp),
                     tint = Color.White
                 )
             }
@@ -170,6 +174,39 @@ fun ListaPlatillos(
     onRecetaClick: (Receta) -> Unit,
     modifier: Modifier = Modifier
 ){
+    // Texto superior
+    Text(
+        text = stringResource(R.string.home_screen_welcome),
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Light,
+        color = Color.Gray
+    )
+
+    Text(
+        text = stringResource(R.string.home_screen_pregunta),
+        fontSize = 28.sp,
+        fontWeight = FontWeight.Bold
+    )
+
+    Spacer(modifier = Modifier.height(20.dp))
+
+    // Barra de búsqueda
+    OutlinedTextField(
+        value = "",
+        onValueChange = {},
+        placeholder = { Text(stringResource(R.string.buscar)) },
+        modifier = Modifier.fillMaxWidth().height(56.dp),
+        shape = RoundedCornerShape(50.dp),
+        trailingIcon = {
+            Icon(
+                painter = painterResource(R.drawable.baseline_search_24),
+                contentDescription = stringResource(R.string.buscar)
+            )
+        },
+        singleLine = true
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
     LazyColumn(
         modifier = modifier.padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -183,18 +220,144 @@ fun ListaPlatillos(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .verticalScroll(scrollState)
+            .padding(24.dp)
     ) {
         Text(
+            text = receta.difficulty,
+            fontSize = 14.sp,
+            color = Color.Gray,
+            fontWeight = FontWeight.Medium
+        )
+        Text(
             text = receta.name,
-            fontSize = 24.sp,
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            lineHeight = 36.sp,
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+
+        //Categorías
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(modifier = Modifier.weight(1f)) {
+                receta.tags.take(3).forEach { tag ->
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .background(
+                                Color.LightGray.copy(alpha = 0.3f),
+                                RoundedCornerShape(16.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 4.dp)
+                    ) {
+                        Text(text = tag, fontSize = 12.sp, color = Color.DarkGray)
+                    }
+                }
+            }
+            Icon(
+                painter = painterResource(R.drawable.heart_outline),
+                contentDescription = null,
+                tint = Color.Gray,
+                modifier = Modifier.size(32.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            //Lista
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Ingredientes",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                receta.ingredients.forEach { ingrediente ->
+                    Text(
+                        text = "• $ingrediente",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    )
+                }
+            }
+
+            //Imagen lateral
+            Column(
+                modifier = Modifier.width(130.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Card(
+                    shape = RoundedCornerShape(20.dp),
+                    modifier = Modifier.size(130.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    AsyncImage(
+                        model = receta.image,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(R.drawable.food_takeout_box),
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = Color.Gray
+                    )
+                    Text(text = " ${receta.servings} porc.", fontSize = 11.sp, color = Color.Gray)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        painter = painterResource(R.drawable.fire),
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = Color.Gray
+                    )
+                    Text(text = " ${receta.caloriesPerServing}", fontSize = 11.sp, color = Color.Gray)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        //Preparación
+        Text(
+            text = "Preparacion",
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
+        Text(
+            text = "${receta.prepTimeMinutes + receta.cookTimeMinutes} min",
+            fontSize = 13.sp,
+            color = Color.Gray,
+            fontWeight = FontWeight.Medium
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = receta.instructions.joinToString("\n\n"),
+            fontSize = 15.sp,
+            color = Color.Gray,
+            lineHeight = 22.sp
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
