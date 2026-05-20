@@ -157,7 +157,6 @@ fun Perfil(
                     Text(
                         text = stringResource(R.string.kcal_hoy),
                         fontSize = 12.sp,
-                        color = Color.Gray
                     )
                 }
             }
