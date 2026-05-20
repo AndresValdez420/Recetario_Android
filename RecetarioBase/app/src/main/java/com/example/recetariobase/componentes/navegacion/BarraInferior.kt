@@ -37,13 +37,13 @@ fun BarraInferior(
             stringResource(R.string.Favorites),
             R.drawable.heart_outline,
             R.drawable.heart,
-            Pantallas.Perfil
+            Pantallas.Favoritos
         ),
         DestinoSuperior(
             stringResource(R.string.Profile),
             R.drawable.account_circle_outline,
             R.drawable.account_circle,
-            Pantallas.Favoritos
+            Pantallas.Perfil
         )
     )
 

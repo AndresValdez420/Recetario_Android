@@ -89,7 +89,16 @@ class MainActivity : ComponentActivity() {
                                 Favoritos()
                             }
                             composable<Pantallas.Perfil> {
-                                Perfil()
+                                val context = LocalContext.current
+                                val recetasMap = remember {
+                                    Datos.getRecetas(context)
+                                }
+                                val todasLasRecetas = remember(recetasMap) {
+                                    recetasMap.values.flatten()
+                                }
+                                Perfil(
+                                    recetas = todasLasRecetas
+                                )
                             }
                         }
 

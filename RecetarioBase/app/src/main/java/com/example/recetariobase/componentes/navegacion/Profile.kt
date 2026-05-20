@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,6 +31,7 @@ import com.example.recetariobase.R
 import org.w3c.dom.Text
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import coil3.compose.AsyncImage
 import com.example.recetariobase.RecetasListaConCategorias
 import com.example.recetariobase.modelos.Receta
@@ -170,11 +172,14 @@ fun Perfil(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
+                        .height(190.dp),
 
-                    shape = RoundedCornerShape(14.dp)
+                    shape = RoundedCornerShape(22.dp)
                 ) {
+
                     Box {
+
+                        // Imagen
                         AsyncImage(
                             model = receta.image,
                             contentDescription = receta.name,
@@ -184,47 +189,84 @@ fun Perfil(
                             contentScale = ContentScale.Crop
                         )
 
+                        // Oscurecer imagen
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
-                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.55f)
+                                    Color.Black.copy(alpha = 0.28f)
                                 )
                         )
 
-                        //Categoría arriba derecha
-                        Text(
-                            receta.mealType.joinToString(" • "),
+                        // Barra superior
+                        Row(
                             modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .padding(10.dp),
+                                .fillMaxWidth()
+                                .padding(14.dp),
 
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
 
-                        //Información abajo izquierda
+                            // Calorías
+                            Surface(
+                                shape = RoundedCornerShape(50),
+                                color = Color.Black.copy(alpha = 0.35f),
+                            ) {
+
+                                Row(
+                                    modifier = Modifier.padding(
+                                        horizontal = 10.dp,
+                                        vertical = 4.dp
+                                    ),
+
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+
+                                    Icon(
+                                        painter = painterResource(R.drawable.fire),
+                                        contentDescription = "Calorías",
+
+                                        tint = Color.White,
+
+                                        modifier = Modifier.size(14.dp)
+                                    )
+
+                                    Text(
+                                        text = "${receta.caloriesPerServing} kcal",
+                                        color = Color.White,
+                                        fontSize = 12.sp
+                                    )
+                                }
+                            }
+
+                            // Tipo de comida
+                            Text(
+                                text = receta.mealType.joinToString(" • "),
+                                color = Color.White,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp
+                            )
+                        }
+
+                        // Parte inferior
                         Column(
                             modifier = Modifier
                                 .align(Alignment.BottomStart)
-                                .padding(12.dp)
+                                .padding(16.dp)
                         ) {
 
                             Text(
-                                text = "${receta.caloriesPerServing} kcal",
-                                fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                            )
-
-                            Text(
                                 text = receta.name,
-                                fontSize = 30.sp,
-                                fontWeight = FontWeight.Light,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = Color.White,
+                                fontSize = 32.sp,
+                                lineHeight = 34.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         }
                     }
-            }
+                }
         }
 
     }
