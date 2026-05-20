@@ -49,6 +49,8 @@ class MainActivity : ComponentActivity() {
             var recetaSeleccionada by remember { mutableStateOf<Receta?>(null) }
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
+            var favoritos by remember { mutableStateOf(setOf<Receta>()) }
+
             RecetarioBaseTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -77,16 +79,30 @@ class MainActivity : ComponentActivity() {
 
                                 HomeScreen(
                                     recetas = todasLasRecetas,
+                                    favoritos = favoritos,
+                                    onToggleFavorite = { receta ->
+                                        favoritos = if (favoritos.contains(receta)) favoritos - receta else favoritos + receta
+                                    },
                                     onRecetaClick = { receta ->
                                         recetaSeleccionada = receta
                                     }
                                 )
                             }
                             composable<Pantallas.Recetas> {
-                                RecetasListaConCategorias()
+                                RecetasListaConCategorias(
+                                    favoritos = favoritos,
+                                    onToggleFavorite = { receta ->
+                                        favoritos = if (favoritos.contains(receta)) favoritos - receta else favoritos + receta
+                                    },
+                                    onRecetaClick = { recetaSeleccionada = it }
+                                )
                             }
                             composable<Pantallas.Favoritos> {
-                                Favoritos()
+                                Favoritos(
+                                    recetasFavoritas = favoritos.toList(),
+                                    onRecetaClick = { recetaSeleccionada = it },
+                                    onRemoveFavorite = { receta -> favoritos = favoritos - receta }
+                                )
                             }
                             composable<Pantallas.Perfil> {
                                 val context = LocalContext.current
@@ -107,7 +123,14 @@ class MainActivity : ComponentActivity() {
                                 onDismissRequest = { recetaSeleccionada = null },
                                 sheetState = sheetState
                             ) {
-                                ContenidoHojaInferior(receta = recetaSeleccionada!!)
+                                ContenidoHojaInferior(
+                                    receta = recetaSeleccionada!!,
+                                    isFavorite = favoritos.contains(recetaSeleccionada!!),
+                                    onFavoriteClick = {
+                                        val receta = recetaSeleccionada!!
+                                        favoritos = if (favoritos.contains(receta)) favoritos - receta else favoritos + receta
+                                    }
+                                )
                             }
                         }
                     }
@@ -119,28 +142,40 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecetasListaConCategorias(modifier: Modifier = Modifier) {
+fun RecetasListaConCategorias(
+    favoritos: Set<Receta> = emptySet(),
+    onToggleFavorite: (Receta) -> Unit = {},
+    onRecetaClick: (Receta) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
     val recetasMap = remember { Datos.getRecetas(context) }
     val todasLasRecetas = remember(recetasMap) { recetasMap.values.flatten() }
 
-    var recetaSeleccionada by remember { mutableStateOf<Receta?>(null) }
+    var recetaInternaSeleccionada by remember { mutableStateOf<Receta?>(null) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Box(modifier = modifier.fillMaxSize()) {
         ListaPlatillos(
             recetas = todasLasRecetas,
+            favoritos = favoritos,
+            onToggleFavorite = onToggleFavorite,
             onRecetaClick = { receta ->
-                recetaSeleccionada = receta
+                recetaInternaSeleccionada = receta
+                onRecetaClick(receta)
             }
         )
 
-        if (recetaSeleccionada != null) {
+        if (recetaInternaSeleccionada != null) {
             ModalBottomSheet(
-                onDismissRequest = { recetaSeleccionada = null },
+                onDismissRequest = { recetaInternaSeleccionada = null },
                 sheetState = sheetState
             ) {
-                ContenidoHojaInferior(receta = recetaSeleccionada!!)
+                ContenidoHojaInferior(
+                    receta = recetaInternaSeleccionada!!,
+                    isFavorite = favoritos.contains(recetaInternaSeleccionada!!),
+                    onFavoriteClick = { onToggleFavorite(recetaInternaSeleccionada!!) }
+                )
             }
         }
     }

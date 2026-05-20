@@ -29,6 +29,8 @@ import com.example.recetariobase.modelos.Receta
 @Composable
 fun PlatilloCard(
     receta: Receta,
+    isFavorite: Boolean = false,
+    onFavoriteClick: () -> Unit = {},
     onClick: () -> Unit
 ) {
     val tagBackgroundColor = Color.Black.copy(alpha = 0.4f)
@@ -153,16 +155,16 @@ fun PlatilloCard(
             }
 
             IconButton(
-                onClick = { },
+                onClick = { onFavoriteClick() },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(8.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.heart_outline),
+                    painter = painterResource(if (isFavorite) R.drawable.heart else R.drawable.heart_outline),
                     contentDescription = "Favorito",
                     modifier = Modifier.size(28.dp),
-                    tint = Color.White
+                    tint = if (isFavorite) Color.Red else Color.White
                 )
             }
         }
@@ -173,6 +175,8 @@ fun PlatilloCard(
 fun ListaPlatillos(
     recetas: List<Receta>,
     onRecetaClick: (Receta) -> Unit,
+    favoritos: Set<Receta> = emptySet(),
+    onToggleFavorite: (Receta) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -218,9 +222,10 @@ fun ListaPlatillos(
         ) {
 
             items(recetas) { receta ->
-
                 PlatilloCard(
                     receta = receta,
+                    isFavorite = favoritos.contains(receta),
+                    onFavoriteClick = { onToggleFavorite(receta) },
                     onClick = { onRecetaClick(receta) }
                 )
             }
@@ -229,7 +234,12 @@ fun ListaPlatillos(
 }
 
 @Composable
-fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
+fun ContenidoHojaInferior(
+    receta: Receta,
+    isFavorite: Boolean = false,
+    onFavoriteClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -273,12 +283,14 @@ fun ContenidoHojaInferior(receta: Receta, modifier: Modifier = Modifier) {
                     }
                 }
             }
-            Icon(
-                painter = painterResource(R.drawable.heart_outline),
-                contentDescription = "Favoritos",
-                tint = Color.Gray,
-                modifier = Modifier.size(32.dp)
-            )
+            IconButton(onClick = onFavoriteClick) {
+                Icon(
+                    painter = painterResource(if (isFavorite) R.drawable.heart else R.drawable.heart_outline),
+                    contentDescription = "Favoritos",
+                    tint = if (isFavorite) Color.Red else Color.Gray,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))

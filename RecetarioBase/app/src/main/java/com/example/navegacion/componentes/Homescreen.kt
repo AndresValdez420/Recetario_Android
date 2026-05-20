@@ -26,6 +26,8 @@ import com.example.recetariobase.modelos.Receta
 fun HomeScreen(
     recetas: List<Receta>,
     onRecetaClick: (Receta) -> Unit,
+    favoritos: Set<Receta> = emptySet(),
+    onToggleFavorite: (Receta) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val recetaPrincipal = recetas.firstOrNull()
@@ -72,6 +74,7 @@ fun HomeScreen(
 
         // CARD PRINCIPAL
         recetaPrincipal?.let { receta ->
+            val esFavorito = favoritos.contains(receta)
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -130,13 +133,13 @@ fun HomeScreen(
                     }
 
                     IconButton(
-                        onClick = {},
+                        onClick = { onToggleFavorite(receta) },
                         modifier = Modifier.align(Alignment.BottomEnd).padding(12.dp)
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.heart_outline),
+                            painter = painterResource(if (esFavorito) R.drawable.heart else R.drawable.heart_outline),
                             contentDescription = "",
-                            tint = Color.White
+                            tint = if (esFavorito) Color.Red else Color.White
                         )
                     }
                 }
@@ -158,6 +161,7 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             items(recetasPopulares) { receta ->
+                val esFavorito = favoritos.contains(receta)
                 Card(
                     modifier = Modifier
                         .width(160.dp)
@@ -211,6 +215,18 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
                                     .padding(horizontal = 4.dp)
+                            )
+                        }
+
+                        IconButton(
+                            onClick = { onToggleFavorite(receta) },
+                            modifier = Modifier.align(Alignment.BottomEnd).padding(4.dp).size(32.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(if (esFavorito) R.drawable.heart else R.drawable.heart_outline),
+                                contentDescription = "",
+                                tint = if (esFavorito) Color.Red else Color.White,
+                                modifier = Modifier.size(20.dp)
                             )
                         }
                     }

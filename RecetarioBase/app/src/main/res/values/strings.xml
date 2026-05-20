@@ -20,4 +20,5 @@
     <string name="usuario">Hatty Hattington</string>
     <string name="calorias_sem">Calorias semanales</string>
     <string name="kcal_hoy">kcal hoy</string>
+    <string name="no_tienes_favoritos">No tienes favoritos aún</string>
 </resources>
