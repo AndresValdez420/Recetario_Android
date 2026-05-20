@@ -140,7 +140,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecetasListaConCategorias(
     favoritos: Set<Receta> = emptySet(),
@@ -152,32 +151,13 @@ fun RecetasListaConCategorias(
     val recetasMap = remember { Datos.getRecetas(context) }
     val todasLasRecetas = remember(recetasMap) { recetasMap.values.flatten() }
 
-    var recetaInternaSeleccionada by remember { mutableStateOf<Receta?>(null) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
     Box(modifier = modifier.fillMaxSize()) {
         ListaPlatillos(
             recetas = todasLasRecetas,
             favoritos = favoritos,
             onToggleFavorite = onToggleFavorite,
-            onRecetaClick = { receta ->
-                recetaInternaSeleccionada = receta
-                onRecetaClick(receta)
-            }
+            onRecetaClick = onRecetaClick
         )
-
-        if (recetaInternaSeleccionada != null) {
-            ModalBottomSheet(
-                onDismissRequest = { recetaInternaSeleccionada = null },
-                sheetState = sheetState
-            ) {
-                ContenidoHojaInferior(
-                    receta = recetaInternaSeleccionada!!,
-                    isFavorite = favoritos.contains(recetaInternaSeleccionada!!),
-                    onFavoriteClick = { onToggleFavorite(recetaInternaSeleccionada!!) }
-                )
-            }
-        }
     }
 }
 

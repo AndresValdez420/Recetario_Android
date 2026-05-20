@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recetariobase.R
-import com.example.recetariobase.componentes.PlatilloCard
+import com.example.recetariobase.componentes.PlatilloCardFavorito
 import com.example.recetariobase.modelos.Receta
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,13 +44,6 @@ fun Favoritos(
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-
-        Text(
-            text = "— Recientes",
-            fontSize = 14.sp,
-            color = Color.Gray,
-            modifier = Modifier.padding(bottom = 16.dp, start = 8.dp)
-        )
 
         if (recetasFavoritas.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -81,6 +74,7 @@ fun Favoritos(
 
                     SwipeToDismissBox(
                         state = estado,
+                        modifier = Modifier.animateItem(),
                         backgroundContent = {
                             val color = when (estado.dismissDirection) {
                                 SwipeToDismissBoxValue.EndToStart -> Color.Red.copy(alpha = 0.8f)
@@ -95,7 +89,7 @@ fun Favoritos(
                                     .padding(end = 16.dp)
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.fire),
+                                    painter = painterResource(R.drawable.trash_can),
                                     contentDescription = "Eliminar",
                                     tint = Color.White
                                 )
@@ -103,7 +97,7 @@ fun Favoritos(
                         },
                         enableDismissFromStartToEnd = false
                     ) {
-                        PlatilloCard(
+                        PlatilloCardFavorito(
                             receta = receta,
                             isFavorite = true,
                             onFavoriteClick = { onRemoveFavorite(receta) },

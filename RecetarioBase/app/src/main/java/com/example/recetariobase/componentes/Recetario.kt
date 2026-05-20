@@ -1,5 +1,8 @@
 package com.example.recetariobase.componentes
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,8 +12,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -31,14 +36,21 @@ fun PlatilloCard(
     receta: Receta,
     isFavorite: Boolean = false,
     onFavoriteClick: () -> Unit = {},
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val tagBackgroundColor = Color.Black.copy(alpha = 0.4f)
     val tagShape = RoundedCornerShape(8.dp)
 
+    val heartScale by animateFloatAsState(
+        targetValue = if (isFavorite) 1.2f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "heartScale"
+    )
+
     Card(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(220.dp)
             .padding(8.dp),
@@ -163,7 +175,99 @@ fun PlatilloCard(
                 Icon(
                     painter = painterResource(if (isFavorite) R.drawable.heart else R.drawable.heart_outline),
                     contentDescription = "Favorito",
-                    modifier = Modifier.size(28.dp),
+                    modifier = Modifier.size(28.dp).scale(heartScale),
+                    tint = if (isFavorite) Color.Red else Color.White
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlatilloCardFavorito(
+    receta: Receta,
+    isFavorite: Boolean = false,
+    onFavoriteClick: () -> Unit = {},
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val tagBackgroundColor = Color.Black.copy(alpha = 0.4f)
+    val tagShape = RoundedCornerShape(8.dp)
+
+    val heartScale by animateFloatAsState(
+        targetValue = if (isFavorite) 1.2f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "heartScaleFav"
+    )
+
+    Card(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(220.dp)
+            .padding(8.dp),
+        shape = RoundedCornerShape(24.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            AsyncImage(
+                model = receta.image,
+                contentDescription = receta.name,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.7f)
+                            ),
+                            startY = 100f
+                        )
+                    )
+            )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "${receta.prepTimeMinutes + receta.cookTimeMinutes} min",
+                    fontSize = 12.sp,
+                    color = Color.White,
+                    modifier = Modifier
+                        .background(tagBackgroundColor, tagShape)
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = receta.name,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    lineHeight = 30.sp
+                )
+            }
+
+            IconButton(
+                onClick = { onFavoriteClick() },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(8.dp)
+            ) {
+                Icon(
+                    painter = painterResource(if (isFavorite) R.drawable.heart else R.drawable.heart_outline),
+                    contentDescription = "Favorito",
+                    modifier = Modifier.size(18.dp).scale(heartScale),
                     tint = if (isFavorite) Color.Red else Color.White
                 )
             }
@@ -220,9 +324,9 @@ fun ListaPlatillos(
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-
-            items(recetas) { receta ->
+            items(recetas, key = { it.id }) { receta ->
                 PlatilloCard(
+                    modifier = Modifier.animateItem(),
                     receta = receta,
                     isFavorite = favoritos.contains(receta),
                     onFavoriteClick = { onToggleFavorite(receta) },
@@ -241,6 +345,12 @@ fun ContenidoHojaInferior(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
+
+    val heartScale by animateFloatAsState(
+        targetValue = if (isFavorite) 1.2f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "heartScaleSheet"
+    )
 
     Column(
         modifier = modifier
@@ -288,7 +398,7 @@ fun ContenidoHojaInferior(
                     painter = painterResource(if (isFavorite) R.drawable.heart else R.drawable.heart_outline),
                     contentDescription = "Favoritos",
                     tint = if (isFavorite) Color.Red else Color.Gray,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp).scale(heartScale)
                 )
             }
         }
