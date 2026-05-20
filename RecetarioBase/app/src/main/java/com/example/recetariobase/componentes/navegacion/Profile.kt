@@ -7,9 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,9 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recetariobase.R
 import org.w3c.dom.Text
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import coil3.compose.AsyncImage
+import com.example.recetariobase.RecetasListaConCategorias
+import com.example.recetariobase.modelos.Receta
+import com.example.recetariobase.ui.theme.RecetarioBaseTheme
 
 @Composable
-fun Perfil() {
+fun Perfil(
+    recetas: List<Receta>,
+) {
+    val recetasGuardadas = recetas.drop(45)
 
     Column(
         modifier = Modifier
@@ -52,17 +64,21 @@ fun Perfil() {
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
+            AsyncImage(
+                model = "https://static.wikia.nocookie.net/battleblocktheateres/images/c/cb/Hatty_Hattington.jpg/revision/latest?cb=20170825205059&path-prefix=es",
+                contentDescription = "Foto de perfil",
 
-            Box(
                 modifier = Modifier
                     .size(180.dp)
+                    .clip(CircleShape)
                     .border(
                         width = 4.dp,
                         color = Color.LightGray,
                         shape = CircleShape
                     ),
-                contentAlignment = Alignment.Center
-            ) {}
+
+                contentScale = ContentScale.Crop
+            )
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -88,14 +104,11 @@ fun Perfil() {
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
 
-                    Box(
+                    LinearProgressIndicator(
+                        progress = { 0.7f },
                         modifier = Modifier
-                            .width(80.dp)
-                            .height(18.dp)
-                            .background(
-                                Color.Gray,
-                                RoundedCornerShape(4.dp)
-                            )
+                            .fillMaxWidth()
+                            .height(8.dp),
                     )
 
                     Text(
@@ -126,15 +139,11 @@ fun Perfil() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-
-                    Box(
+                    LinearProgressIndicator(
+                        progress = { 0.45f },
                         modifier = Modifier
-                            .width(50.dp)
-                            .height(10.dp)
-                            .background(
-                                Color.Gray,
-                                RoundedCornerShape(4.dp)
-                            )
+                            .fillMaxWidth()
+                            .height(6.dp),
                     )
 
                     Text(
@@ -151,17 +160,74 @@ fun Perfil() {
                 }
             }
         }
+        Spacer(modifier = Modifier.height(32.dp))
+
+        //Recetas guardadas
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            items(recetasGuardadas) { receta ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp),
+
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    Box {
+                        AsyncImage(
+                            model = receta.image,
+                            contentDescription = receta.name,
+
+                            modifier = Modifier.fillMaxSize(),
+
+                            contentScale = ContentScale.Crop
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.55f)
+                                )
+                        )
+
+                        //Categoría arriba derecha
+                        Text(
+                            receta.mealType.joinToString(" • "),
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(10.dp),
+
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        //Información abajo izquierda
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(12.dp)
+                        ) {
+
+                            Text(
+                                text = "${receta.caloriesPerServing} kcal",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+
+                            Text(
+                                text = receta.name,
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.Light,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+            }
+        }
+
     }
 }
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun PerfilPreview() {
-    MaterialTheme {
-        Perfil()
-    }
 }
 
